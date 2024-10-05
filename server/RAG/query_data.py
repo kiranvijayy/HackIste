@@ -14,13 +14,42 @@ load_dotenv()
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-Suggest 5 singleword headings based only on the following context:
+Generate 3 quizz questions along with 4 options( 3 incorrect and one correct answer ) based only on the following context in the following format.
+1. question?
+a. option 1
+b. option 2
+c. option 3
+d. option 4
+Answer- 4
+
+$
+
+2. question?
+a. option 1
+b. option 2
+c. option 3
+d. option 4
+
+Answer- 4
+
+$
+
+3. question?
+a. option 1
+b. option 2
+c. option 3
+d. option 4
+
+Answer- 4
+
+
+:
 
 {context}
 
 ---
 
-Suggest based on the above context related to the interests given below: {question}
+study the above context and generate quizzes in the given format on the following topic: {question}
 """
 
 
@@ -40,7 +69,7 @@ def main():
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Search the DB.
-    results = db.similarity_search_with_relevance_scores(query_text, k=4)
+    results = db.similarity_search_with_relevance_scores(query_text, k=5)
    # if len(results) == 0 or results[0][1] < 0.7:
     #    print(f"Unable to find matching results.")
      #   return
@@ -60,7 +89,7 @@ def main():
 
     response = cohere_client.generate(
         prompt=prompt, 
-        max_tokens=300, 
+        max_tokens=600, 
         temperature=0.5
     )
     response_text = response.generations[0].text
