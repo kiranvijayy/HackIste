@@ -4,7 +4,6 @@ import { CiUser } from "react-icons/ci";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdPassword, MdEmail } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
-// Import the image
 
 function Reg() {
   const [username, setUsername] = useState('');
@@ -19,15 +18,46 @@ function Reg() {
   // Handle form submission (without backend interaction)
   function handleReg(e) {
     e.preventDefault();
-
+  
+    // Clear previous messages
+    setErrorMsg('');
+    setSuccessMsg('');
+  
     // Simple front-end validation
-    if (!Email || !username || !createPassword || !confirmPassword || !Imei || !ph) {
+    if (!Email || !username || !createPassword || !confirmPassword || !classi || !ph) {
       setErrorMsg('Please fill in all fields');
     } else if (createPassword !== confirmPassword) {
       setErrorMsg('Passwords do not match');
     } else {
-      setErrorMsg('');
-      setSuccessMsg('Registration successful!');
+      // Data to be sent to the backend
+      const formData = {
+        username,
+        email: Email,
+        password: createPassword,
+        class: classi,
+        phone: ph,
+      };
+  
+      // Perform the POST request using fetch
+      fetch('https://your-backend-api.com/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            setSuccessMsg('Registration successful!');
+          } else {
+            setErrorMsg(data.message || 'Registration failed');
+          }
+        })
+        .catch((error) => {
+          setErrorMsg('An error occurred. Please try again.');
+          console.error('Error:', error);
+        });
     }
   }
 
@@ -68,7 +98,7 @@ function Reg() {
               <input type='password' placeholder='Confirm Password' className='inp11' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
             </div>
 
-            {/* IMEI Input */}
+            {/* Class Input */}
             <div className='inp'>
               <MdPassword className='user' />
               <input type='text' placeholder='Class' className='inp11' value={classi} onChange={(e) => setClassi(e.target.value)} />
@@ -86,7 +116,7 @@ function Reg() {
 
           {/* Right Div for the Image */}
           <div className='rightdivv'>
-            <img className='img1'  alt='register' />
+            <img className='img1' alt='register' />
           </div>
         </div>
       </div>

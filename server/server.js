@@ -30,7 +30,7 @@ const webDev = require("./routes/webDev");
 //setup of db
 const uri = process.env.MONGODB_URI;
 
-mongoose.connect(uri)
+mongoose.connect(uri) 
     .then(() => {
         console.log('Connected to the database');
     })
