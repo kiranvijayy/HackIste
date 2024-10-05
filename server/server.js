@@ -1,55 +1,39 @@
-const express = require("express");
-const path = require("path");
-const app = express();
-const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
-
 import UserRouter from "./routes/user.route.js";
+import express from "express";
+import path from "path";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+dotenv.config();
 
-//needed this line to properly parse json objects in req
+const app = express();
+
+// Parse JSON objects in requests
 app.use(bodyParser.json());
 
-//cors
-//front end and back end deployed to different urls
-//needed to avoid cors error
+// Avoid CORS issues
 app.use(
   cors({
     origin: process.env.ORIGIN,
   })
 );
 
-//requiring the routes
-const aminoAcids = require("./routes/aminoAcids");
-const functionalGroups = require("./routes/functionalGroups");
-const physics = require("./routes/physics");
-const biology = require("./routes/biology");
-const webDev = require("./routes/webDev");
+// MongoDB connection
+const uri = "mongodb+srv://nivedkp001:nived@123@cluster0.sfvd0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";  // Use environment variable
+mongoose.connect(uri)
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+  });
 
-//setup of db
-const uri = process.env.MONGODB_URI;
+// Routes
+app.use("/api/user", UserRouter);
 
-mongoose.connect(uri) 
-    .then(() => {
-        console.log('Connected to the database');
-    })
-    .catch(err => {
-        console.error('Error connecting to MongoDB:', err);
-    });
-1
-//routes
-app.use("/api/user",UserRouter);
-
-//for heroku deployment
-app.use(express.static(__dirname));
-app.use(express.static(path.join(__dirname, "client/build")));
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
-
-//listen to port
+// Listen to port
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, function () {
-  console.log("App started on post 5000");
+  console.log(`App started on port ${PORT}`);
 });
