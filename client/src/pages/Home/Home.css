@@ -42,4 +42,11 @@
   .button:hover {
     background-color: #0056b3;
   }
+
+  .home-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: whitesmoke;
+  }
   
+
