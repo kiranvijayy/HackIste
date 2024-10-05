@@ -6,6 +6,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 
+import UserRouter from "./routes/user.route.js";
+
 //needed this line to properly parse json objects in req
 app.use(bodyParser.json());
 
@@ -37,11 +39,7 @@ mongoose.connect(uri)
     });
 1
 //routes
-app.use("/aminoacids", aminoAcids);
-app.use("/functionalgroups", functionalGroups);
-app.use("/physics", physics);
-app.use("/biology", biology);
-app.use("/webdev", webDev);
+app.use("/api/user",UserRouter);
 
 //for heroku deployment
 app.use(express.static(__dirname));
