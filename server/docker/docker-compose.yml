@@ -1,20 +1,7 @@
-version: '3.8'
-
 services:
-  tf-serving:
-    image: tensorflow/serving
-    ports:
-      - "8501:8501"
-    environment:
-      - MODEL_NAME=rag_model
-    volumes:
-      - ./saved_model:/models/rag_model
-
   fastapi-app:
     build: 
-      context: ./server/docker
-      dockerfile: DockerFile
+      context: ./
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    depends_on:
-      - tf-serving

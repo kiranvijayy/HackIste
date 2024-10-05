@@ -7,13 +7,11 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed dependencies
+# Install the required dependencies
 RUN pip install --no-cache-dir fastapi uvicorn requests pydantic
 
-# Make port 80 available to the world outside this container
-EXPOSE 80
+# Expose port 8000
+EXPOSE 8000
 
 # Run FastAPI app using Uvicorn
-CMD ["uvicorn", "main:api", "localhost", "0.0.0.0", "--port", "80"]
-
-# docker-compose up --build
+CMD ["uvicorn", "api:app", "--host", "0.0.0.0", "--port", "8000"]
