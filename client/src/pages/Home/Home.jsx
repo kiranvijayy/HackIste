@@ -18,21 +18,21 @@ const topics = [
   },
   {
     id: 3,
-    title: "Web Development",
+    title: "Chemistry",
     description: "Learn how to build websites and web applications.",
     imageUrl: "https://via.placeholder.com/150",
     link: "/web-dev"
   },
   {
     id: 4,
-    title: "Organic Chemistry",
+    title: "Social science",
     description: "Dive into the study of the structure, properties, and reactions of organic compounds.",
     imageUrl: "https://via.placeholder.com/150",
     link: "/organic-chem"
   },
   {
     id: 5,
-    title: "Amino Acids",
+    title: "English",
     description: "Discover the building blocks of proteins.",
     imageUrl: "https://via.placeholder.com/150",
     link: "/amino-acids"
@@ -42,7 +42,7 @@ const topics = [
 const HomePage = () => {
   return (
     <div className="homepage">
-      <h1>Welcome to Your Personalized Learning Hub</h1>
+      <h1 className="home-title">Welcome to Your Personalized Learning Hub</h1>
       <div className="topic-cards">
         {topics.map(topic => (
           <div key={topic.id} className="topic-card">
