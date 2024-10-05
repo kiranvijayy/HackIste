@@ -20,7 +20,7 @@ app.use(
 );
 
 // MongoDB connection
-const uri = "mongodb+srv://nivedkp001:nived@123@cluster0.sfvd0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";  // Use environment variable
+const uri = "mongodb+srv://nivedkp001:nived%40123@cluster0.sfvd0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";  // Use environment variable
 mongoose.connect(uri)
   .then(() => {
     console.log('Connected to MongoDB');
