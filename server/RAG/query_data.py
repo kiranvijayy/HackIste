@@ -13,7 +13,7 @@ cohere_api_key = os.getenv('COHERE_API_KEY')
 CHROMA_PATH = "chroma"
 
 PROMPT_TEMPLATE = """
-answer the question based on the following context:
+Suggest 5 singleword headings based only on the following context:
 
 {context}
 
@@ -23,9 +23,19 @@ study the above context and answer the following question: {question}
 """
 
 
-def qandr(query_text):
-    # Prepare the DB with CohereEmbeddings
-    embedding_function = CohereEmbeddings(cohere_api_key=cohere_api_key, user_agent="MyApp/1.0")
+def main():
+    # Create CLI.
+    parser = argparse.ArgumentParser()
+    parser.add_argument("query_text", type=str, help="The query text.")
+    args = parser.parse_args()
+    query_text = args.query_text
+
+    # Prepare the DB.
+    #embedding_function = OpenAIEmbeddings()
+    #db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    cohere_api_key = os.environ['COHERE_API_KEY']  # Ensure COHERE_API_KEY is in .env
+    embedding_function = CohereEmbeddings(cohere_api_key=cohere_api_key)
+    
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Search the DB for similar documents
@@ -46,8 +56,13 @@ def qandr(query_text):
         max_tokens=300, 
         temperature=0.5
     )
+    response_text = response.generations[0].text
 
-    # Extract the response text
-    response_text = response.generations[0].text if response.generations else "No valid response generated."
+    sources = [doc.metadata.get("source", None) for doc, _score in results]
+    formatted_response = f"\n Response: {response_text} \n \n Sources: {sources}"
+    print('\n\n\n',response_text)
+    #print(formatted_response)
 
-    return response_text
+
+if __name__ == "__main__":
+    main()
