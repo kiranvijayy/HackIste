@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "science flashcard app",
   "main": "server.js",
+  "type": "module",
   "engines": {
     "node": "12.13.0"
   },
